@@ -162,6 +162,7 @@ Process finished with exit code 0
 ```
 
 **Asignando las Variables**
+
 ¿Recuerdas que ya habíamos definido unas variables al principio para la salida? Bien aquí comenzaremos a trabajar previo a transformar esas variables. En el paso anterior sólo dividimos la lista. Ese paso no es obligatorio si usas el método más avanzado de asignación. Entendamos cómo funciona la asignación primero para el paso simple. Y tu luego investigas por tu cuenta el movimiento o **desplazamiento dentro de la lista** para el avanzado.
 
 Para que se entienda revisemos uno de los problemas que resultaron y cómo es que lo vamos a descomponer, este código es netamente conceptual: Top_op será el operador de arriba, luego viene sign que es el signo de la operación, y finalmente bot_op que es el operador de abajo y que **se acompaña** por el signo. Estos responden a 3 posiciones según el largo de la lista
@@ -222,6 +223,7 @@ Revisa la documentación sobre los operadores: https://www.w3schools.com/python/
 Recuerda comentar y descomentar los prints mientras descubres y solucionas posibles errores en el código, recuerda aquí lo estamos particionando y poco a poco irems mostrarndo uno más completo.
 
 **Resolver la Tercera y la Cuarta Regla**
+
 Ya entendemos un poco de lógica y de condicionales, seguramente revisaste el link que te mostré de los operadores y te abrás percatado que existen de diferentes tipos, pero finalmente todos básicos y responden a un uso similar. Para revisar que cada uno de los caracteres de nuestro problema sea numerico, revisaremos la descomposición que hicimos y lo compararemos con el método isnumeric(). Luego para la regla 4 que debemos comparar que sean sólo 4 elementos y no más, utilizamos LEN() para comprobar que si el largo de la lista principal es mayor a 4, es decir, existan 5 o más problemas a resolver nos entregue el mensaje de error.
 
 > **ISNUMERIC()**: Permite revisar todos los caracteres de un string y evulúa si son numéricos o no. Si TODOS son numéricos devolverá VERDADERO si hay uno que no lo sea, devolverá FALSO
@@ -246,6 +248,8 @@ Código:
 **Definiendo el máximo de líneas o rayas**
 
 Parece algo simple pero es parte del código es importante notar que el TOP_OP se muestra solo, y que BOT_OP se muestra junto al signo, por lo tanto tiene un caracter más. Entonces para las líneas punteadas debemos determinar qué número es más grande. El código es un poco más largo porque está hecho de forma descriptiva, porque lo que se busca destacar es que al largo inicialmente se le suma 1 línea más por el signo y luego 1 línea adicional por el espacio obligatorio que se define en las reglas del problema.
+
+> La función STR() convierte el valor especificado a un string.
 
 ```python
             # ancho de cada underline
@@ -315,5 +319,173 @@ def arithmetic_arranger(problem, bol= False):
 ```
 
 ## PARTE 2
-En un par de horas más....
 
+La primera parte consistió en resolver las reglas del problema y en hacer un scanner a la data, definimos algunas variables, utilizamos asignaciones, hicimos comparaciones y revisamos la información disponible con algunos métodos. Ahora viene la parte importante del problema y tal vez lo más complicado que es mostrar el resultado. En esta oportunidad estamos obligados por la definición del mismo a regresar (osea usar 'return') una variable resultado y no un print, y tampoco podemos agregar código adicional fuera de la función.(Esto es por definición del problema, si fuese algo más libre probablemente tendríamos más atribuciones y posibilidades)
+
+**Creando las líneas de Salida**
+
+Entonces retomaremos el espacio que dice "Aquí viene más Código". Entonces definiremos lo que vamos a establecer como salida. Lo primero es que ya tenemos las variables definidas, comenzaremos con top_op y bot_op; parte de las reglas establecen que Debe haber un espacio entre el signo y el operador inferior, además deben estar alineados los operadores a la izquierda. Hay algo más, pero mientras nos ocuparemos de esta parte.
+
+> **RJUST()** : El método rjust() alineará a la derecha el string (existe tb el ljust() o left..), usando un caracter específico (por default se usa el espacio) como caracter de relleno. Su sintaxis es:
+> string.rjust(length, character)
+
+**Lectura Ejemplo Línea 1:** A lo que ya existe en Líena 1 (lo que definimos anteriormente al principio del código) le voy a agregar el contenido que se va iterando de forma acumulativa a la misma con los elementos que se encuentran en la línea del operador superior justificados a la izquierda según el ancho del número más grande + 1 espacio (que corresponde al signo de abajo);
+
+Teniendo este ejemplo haremos lo mimso con la línea dos, la diferencia está en que su ancho lo definimos anteriormente y sólo tenemos que agregar el singo adelante.
+
+Finalmente, debemos integrar las líneas que definimos anteriormente a la iteración, pero tamibén de forma acumulativa ya que queremos que aparezcan luego en cada uno de los resultados. No necesita ser ajustado ya que 'teóricamente' es del ancho máximo y se ajustará al espacio de la operación. Decimos teóricamente porque ún no las visualizamos en acción.
+
+Nos faltaría la línea de resultado que tiene una dependencia.
+
+```python
+            # definimos qué vamos a devolver
+            ln_uno = ln_uno + str(top_op).rjust(lenmax+1)
+            ln_dos = ln_dos + sign + str(bot_op).rjust(lenmax)
+            separador = separador + lines
+```
+
+**Definiendo la Línea de Operación/Resultado**
+
+Ya tenemos 3 de las 4 líneas escritas, aún no integradas a la salida final. Nos falta la línea de operación es decir la que debe sumar o restar según corresponda o bien finalmente no entregar nada.
+
+La operación entonces depende de la variable bol que está definida en nuestros parámetros de la función, y como lo comentamos en un principio, si no le paso ninguna variables, entonces por defecto bol = False y no debe realizar operación alguna, además de no mostrar esa línea.
+
+Entonces si Bol es Verdadero (Por deifnición del problema, sólo nos darían variable True or False), o preguntado de forma inversa not False, entonces tenemos que revisar si estamos sumando o restando. Notese que trabajamos con una cadena de caraceres o strings, y debemos manipular los tipos de datos de STR o INT constantemente.
+
+```python
+  # Realizamos la operación
+            if bol is not False:
+                if sign == '+':
+                    sum_op = int(top_op) + int(bot_op)
+                else:
+                    sum_op = int(top_op) - int(bot_op)
+            else:
+                sum_op = 0
+            resultado = resultado + str(sum_op).rjust(lenmax+1)
+```
+
+**Agregar los 4 Espacios Después de las operaciones*
+
+Una de las reglas solicita que las operaciones estén separadas por al menos 4 espacios, Si hay una sola operación no tiene ningún sentido, pero si son dos o más debemos agreagr esas separaciones.
+
+```python
+if len(problem) > 1:
+                ln_uno = ln_uno + '    '
+                ln_dos = ln_dos + '    '
+                separador = separador + '    '
+                resultado = resultado + '    '
+```
+
+**Construir la variable de Retorno**
+Queda el último o los últimos pasos. Debemos Juntar Todo. Por defecto sabemos que los strings se concatenan con el signo más, y queremos que por cada cilco cuando se recorra la totalidad del elemento se regrese el conjunto de cada línea. Recuerda, tenemos dos salidas que dependen de la variavble bol = False/True si es que se muestra una o la otra.
+
+Por otro lado la última línea probablemente tendrá espacios en blanco o al menos la última parte de la cadena y eso genera espacios adicionales, y no los necesitamos. Entonces buscaremos una función que nos ayude a eliminar estos pasajes indeseados.
+
+Notese que está comentada la salida sin agregaciones para efectos de entender qué es lo que estamos haciendo, que no es más que concatenar las líneas anteriores, pero en la variable de salida si adicionamos el formato que quitará el espacio para las últimas operaciones. por otro lado '\n' representa el salto de línea que se debe aplicar para que se vea como la 'pizarra del colegio'
+
+> **RSTRIP():** El método rstrip() remueve los caracteres sobrantes específicados (al final del string), el espacio es el caracer pot default. Por otro lado y otra función relacionada es Strip() que remueve los del inicio y los del final.
+> Sintaxis: string.rstrip(characters)
+
+Código:
+
+```python
+            if bol is not False:
+                # arranged_problems = linea_uno + linea_dos + linea_tres + linea_cuatro
+                arranged_problems = ln_uno.rstrip() + '\n' + ln_dos.rstrip() + '\n' + separador.rstrip() + '\n' + resultado.rstrip()
+            else:
+                arranged_problems = ln_uno.rstrip() + '\n' + ln_dos.rstrip() + '\n' + separador.rstrip()
+
+    
+    return arranged_problems
+```
+
+CÓDIGO COMPLETO:
+
+```python
+def arithmetic_arranger(problem, bol= False):
+    ln_uno = ''
+    ln_dos = ''
+    separador = ''
+    resultado = ''
+    # Regla 01 Máximo 5 opciones
+    if len(problem) > 5:
+        # print('Demasiadas Operaciones a Ejecutar')
+        # print("Error: Too many problems.")
+        return 'Error: Too many problems.'
+    else:
+        # Entramos ya a analizar los elementos dentro de la lista
+         for oper in problem:
+            # print(oper)
+
+            # separamos el str en substrings método:
+            lst = oper.split()
+            # print(lst)
+            top_op = oper[:oper.index(' ')]
+            bot_op = oper[oper.index(' ')+3:]
+
+            # dentro de la misma separación
+            # Regla 02 Sólo Sumas y Restas
+            sign = oper.find("+")
+            if sign == - 1 :
+                if '/' in oper or '*' in oper:
+                    # print('Sólo se permite operaciones de + o -.')
+                    # print("Error: operator must be '+' or '-'.")
+                    return 'Error: Operator must be '+' or '-'.'
+                else:
+                    sign = '-'
+            else:
+                sign = '+'
+            #print(top_op,sign,bot_op) # Chekc Ok
+
+            # Regla 03 Deben ser numéricos
+            if not top_op.isnumeric() or not bot_op.isnumeric():
+                # print('Sólo se puede operar cuando hay números')
+                # print('Error: Numbers must only contain digits.')
+                return 'Error: Numbers must only contain digits.'
+
+            # Regla 04 Comparamos si los números sin 4 wn cada etapa
+            if len(top_op) > 4 or len(bot_op) > 4:
+                # print('Error: Sólo se pueden calcular números de 4 dígitos')
+                # print('Error: Numbers cannot be more than four digits')
+                return 'Error: Numbers cannot be more than four digits.'
+
+            # ancho de cada underline
+            lenmax = max(len(top_op), len(bot_op))
+            lenmax += 1
+            lines = '-' * (lenmax+1)
+            # lenmax = str(lenmax)
+
+            # definimos qué vamos a devolver
+            ln_uno = ln_uno + str(top_op).rjust(lenmax+1)
+            ln_dos = ln_dos + sign + str(bot_op).rjust(lenmax)
+            separador = separador + lines
+
+            # Realizamos la operación
+            if bol is not False:
+                if sign == '+':
+                    sum_op = int(top_op) + int(bot_op)
+                else:
+                    sum_op = int(top_op) - int(bot_op)
+            else:
+                sum_op = 0
+            resultado = resultado + str(sum_op).rjust(lenmax+1)
+
+            if len(problem) > 1:
+                ln_uno = ln_uno + '    '
+                ln_dos = ln_dos + '    '
+                separador = separador + '    '
+                resultado = resultado + '    '
+
+            if bol is not False:
+                # arranged_problems = linea_uno + linea_dos + linea_tres + linea_cuatro
+                arranged_problems = ln_uno.rstrip() + '\n' + ln_dos.rstrip() + '\n' + separador.rstrip() + '\n' + resultado.rstrip()
+                # print(ln_uno + '\n' + ln_dos + '\n' + separador + '\n' + resultado)
+            else:
+                arranged_problems = ln_uno.rstrip() + '\n' + ln_dos.rstrip() + '\n' + separador.rstrip()
+                # print(ln_uno + '\n' + ln_dos + '\n' + separador)
+    return arranged_problems
+
+
+# Debemos resolver pensando en primero con el True
+r = arithmetic_arranger(['44 + 815', '45 + 43', '123 - 49', '888 + 40', '653 + 87'], True)
+```
