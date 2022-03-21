@@ -18,6 +18,7 @@ Se pide, dada una lista de problemas matemáticos de sumas y restas, reagrupar s
 -----    ------    ----    -----
 ```
 La estructura qeu debemos resolver es la siguiente: (la notación del TRUE indica que se debe mostrar además la respuesta calulada)
+
 ```python
 r = arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])
 r = arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"], True)
@@ -329,7 +330,7 @@ Entonces retomaremos el espacio que dice "Aquí viene más Código". Entonces de
 > **RJUST()** : El método rjust() alineará a la derecha el string (existe tb el ljust() o left..), usando un caracter específico (por default se usa el espacio) como caracter de relleno. Su sintaxis es:
 > string.rjust(length, character)
 
-**Lectura Ejemplo Línea 1:** A lo que ya existe en Líena 1 (lo que definimos anteriormente al principio del código) le voy a agregar el contenido que se va iterando de forma acumulativa a la misma con los elementos que se encuentran en la línea del operador superior justificados a la izquierda según el ancho del número más grande + 1 espacio (que corresponde al signo de abajo);
+**Lectura Ejemplo Línea 1:** A lo que ya existe en Líena 1 (lo que definimos anteriormente al principio del código) le voy a agregar el contenido que se va iterando de forma acumulativa a la misma con los elementos que se encuentran en la línea del operador superior justificados a la izquierda según el ancho del número más grande + 1 espacio (que corresponde al signo de abajo). Reiteramos: como trabajamos con string, debemos asegurarnos que el operador sea un string para no tener problemas al concatenar.
 
 Teniendo este ejemplo haremos lo mimso con la línea dos, la diferencia está en que su ancho lo definimos anteriormente y sólo tenemos que agregar el singo adelante.
 
@@ -399,7 +400,7 @@ Código:
     return arranged_problems
 ```
 
-CÓDIGO COMPLETO:
+# CÓDIGO COMPLETO:
 
 ```python
 def arithmetic_arranger(problem, bol= False):
@@ -435,7 +436,7 @@ def arithmetic_arranger(problem, bol= False):
                     sign = '-'
             else:
                 sign = '+'
-            #print(top_op,sign,bot_op) # Chekc Ok
+            #print(top_op,sign,bot_op) # Check Ok
 
             # Regla 03 Deben ser numéricos
             if not top_op.isnumeric() or not bot_op.isnumeric():
@@ -453,7 +454,6 @@ def arithmetic_arranger(problem, bol= False):
             lenmax = max(len(top_op), len(bot_op))
             lenmax += 1
             lines = '-' * (lenmax+1)
-            # lenmax = str(lenmax)
 
             # definimos qué vamos a devolver
             ln_uno = ln_uno + str(top_op).rjust(lenmax+1)
